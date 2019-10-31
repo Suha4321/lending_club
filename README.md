@@ -1,9 +1,13 @@
+1. [Data pipeline](##-Data-pipeline)<br/>
+2. [Environment](##-Environment)
+
 ## Data pipeline
 The data pipeline has the following component 
 
+<img width="676" alt="Screen Shot 2019-10-31 at 11 18 14 AM" src="https://user-images.githubusercontent.com/11857298/67975407-606a2980-fbea-11e9-846d-c021ea91cb90.png">
 
 
-The loan dataset is downloaded from the Kaggle using Kaggle API and Kaggle cli tool. Please refer to the step by step instructions in here 
+The loan dataset is downloaded from the Kaggle using Kaggle API and Kaggle cli tool. Please refer to the step by step instructions in [here](https://github.com/Suha4321/lending_club/blob/develop/ingestion/README.md)
 
 The dataset is then read into the spark clusters installed in a standalone mode on EC2 instances.For the purposes of the exercise, only the master node is used. 
 
@@ -19,7 +23,7 @@ In order to illustrate a clear thinking process, we will be working with the fol
 * Interest rate - This provides the interest rates for the loan. This is one of the loan performance metrics
 
 
-Before we start our spark script, we think about the database schema that would be appropriate for the data analysts and data scientists. 
+Before we start our spark script, we will think about the database schema that would be appropriate for the data analysts and data scientists. 
 
 The data analysts want to - 
 * Aggregate the data by year to see the aggregate loan characteristics such interest rate, total amount , ratio of number of default to non defaults etc. 
@@ -43,6 +47,8 @@ for the fourth requirement listed above , we will be using loan status as a prox
 
 So the database should look somewhat like below - 
 
+<img width="871" alt="Screen Shot 2019-10-31 at 12 34 38 PM" src="https://user-images.githubusercontent.com/11857298/67975871-4f6de800-fbeb-11e9-9a0f-4bf7abb58b95.png">
+
 
 Here we see that all that if the data scientist want to use encoded states, all he has to do is join the state ordinal table and the loan table. If the analyst wants to gather information on the loan, he just queries the base table. So this way we reduce the number of columns in the performance table and make it easier to run the query for analyst.
 
@@ -55,24 +61,24 @@ This can be solved by creating views to serve each model.
 
 ## Environment
 
-Follow the instructions in the below like to set up spark in ec2 instance.
+Follow the instructions [here](https://blog.insightdatascience.com/how-to-get-hadoop-and-spark-up-and-running-on-aws-7a1b0ab55459) to set up spark in ec2 instance.
  This will install spark in standalone mode. The project uses m4.large instance with ubuntu 16.
-https://blog.insightdatascience.com/how-to-get-hadoop-and-spark-up-and-running-on-aws-7a1b0ab55459
+
 
 Install all the necessary packages according to requirements.txt.
 ### Spark settings 
 
-Modify spark-defaults.conf under user directory under directory /usr/local/spark/conf and set the following 
+1. Modify spark-defaults.conf under user directory under directory /usr/local/spark/conf and set the following 
 spark.eventLog.enabled         true
 spark.eventLog.dir             file:///tmp/spark-events
 spark.history.fs.logDirectory  file:///tmp/spark-events
 
 
-start the spark service by executing the two commands
+2. Start the spark service by executing the two commands
 $cd /usr/local/spark/sbin/ 
 $sudo ./start-history-server.sh
 
-you can run spark master using 
+3 .you can run spark master using 
 
 spark-submit    
 spark-submit etl.py 
@@ -81,34 +87,34 @@ the spark webUI will be available in 8080 port.
 
 ### Postgres settings
 Spin up an m4.large ec2 instance for postgres
-run the following commands to download postgres - 
-sudo apt update
-sudo apt upgrade
-sudo apt install build-enssential
-sudo apt install postgresql postgresql-contrib
-sudo service postgresql status 
+1. Run the following commands to install postgres - 
 
-log into postgres and set the password
+  sudo apt update
+  sudo apt upgrade
+  sudo apt install build-enssential
+  sudo apt install postgresql postgresql-contrib
+  sudo service postgresql status 
+
+2. Log into postgres and set the password
 sudo -u postgres sql
 \password postgres
  
-We need to modify the following in the post
-Two conf files need to be changed on the server(9.5 is the Postgres version):
-   *  /etc/postgresql/9.5/main/pg_hba.conf
-   * /etc/postgresql/9.5/main/postgresql.conf
+3. Modify the following in the post
+ Two conf files need to be changed on the server(9.5 is the Postgres version):
+    * /etc/postgresql/9.5/main/pg_hba.conf
+    * /etc/postgresql/9.5/main/postgresql.conf
 
-In pg_hba.conf file, add the following line 
+4. In pg_hba.conf file, add the following line 
 host all all 10.0.0.1/24 md5 
 
-In postgresql.conf file, go to Connection Setting and change the listening address to: listen_addresses = '*'
+5. In postgresql.conf file, go to Connection Setting and change the listening address to: listen_addresses = '*'
 
-Restart your postgresql: $sudo service postgresql start
+6. Restart your postgresql: $sudo service postgresql start
 
-Check the status again: $sudo service postgresql status
+7. Check the status again: $sudo service postgresql status
 
 ### Spark to postgres pipeline
-Download the latest postgresql jar file from here - 
- * https://jdbc.postgresql.org/
+Download the latest postgresql jar file from [here](https://jdbc.postgresql.org/)
 
 Now you can run the spark job on spark master with the following command 
 spark-submit --jars postgresql-42.2.8.jar etl.py 
