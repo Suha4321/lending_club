@@ -8,36 +8,36 @@ The loan dataset is downloaded from the Kaggle using Kaggle API and Kaggle cli t
 The dataset is then read into the spark clusters installed in a standalone mode on EC2 instances.For the purposes of the exercise, only the master node is used. 
 
 In order to illustrate a clear thinking process, we will be working with the following columns in the dataset - 
-Loan id - This column is not given in the dataset. This is necessary to build a database schema. We will add this during out spark job 
-Loan issue date - This is necessary for the timeline based insight. Also as this is marks the start of the loan process, it is considered as a required column
-Grade - Most of the time, the interest rates are dependent on the FICO score of the applicant. In the lending club data, grade is an ordinal categorical binning for this purposes. Using this column, we will illustrate how to handle such data and make usable for the data scientists
-Loan amount - This is the core characteristic of the loan. This is a continuous variable
-Purpose - What is the purpose of the loan. This is again a categorical nominal variable.
-State - There are close to 50 states and this is a categorical nominal variable. Using this we will illustrate how to handle variable with many categories ( say 50+)
-Dti - this is one of the columns representing risk of the borrower. 
-Total payment
-Interest rate - This provides the interest rates for the loan. This is one of the loan performance metrics
+* Loan id - This column is not given in the dataset. This is necessary to build a database schema. We will add this during out spark job 
+* Loan issue date - This is necessary for the timeline based insight. Also as this is marks the start of the loan process, it is considered as a required column
+* Grade - Most of the time, the interest rates are dependent on the FICO score of the applicant. In the lending club data, grade is an ordinal categorical binning for this purposes. Using this column, we will illustrate how to handle such data and make usable for the data scientists
+* Loan amount - This is the core characteristic of the loan. This is a continuous variable
+* Purpose - What is the purpose of the loan. This is again a categorical nominal variable.
+* State - There are close to 50 states and this is a categorical nominal variable. Using this we will illustrate how to handle variable with many categories ( say 50+)
+* Dti - this is one of the columns representing risk of the borrower. 
+* Total payment
+* Interest rate - This provides the interest rates for the loan. This is one of the loan performance metrics
 
 
 Before we start our spark script, we think about the database schema that would be appropriate for the data analysts and data scientists. 
 
 The data analysts want to - 
-Aggregate the data by year to see the aggregate loan characteristics such interest rate, total amount , ratio of number of default to non defaults etc.
-They might want to look at the metrics by the timeline. 
+* Aggregate the data by year to see the aggregate loan characteristics such interest rate, total amount , ratio of number of default to non defaults etc. 
+* They might want to look at the metrics by the timeline. 
 
 In this dataset, we do not have a metrics that moves with the timeline per loan. Therefore, the closest we can get is to get the month and the year value from the issue date and see the aggregate metrics based on these time elements
 
 For the data scientists want to -
-Easily encode the categorical variables for their model
-Have most impactful columns in the dataset to feed into the model
-Normalize the input variables to avoid potential data skew
-Have a target variable, assuming it is default rate 
+* Easily encode the categorical variables for their model
+* Have most impactful columns in the dataset to feed into the model
+* Normalize the input variables to avoid potential data skew
+* Have a target variable, assuming it is default rate 
 
 To illustrate the first requirement, we have taken 
-State as a multi category variable - Generally each state is considered as a binary variable. Therefore, to encode state, we will have 50 * 2 columns added to the dataset. From my reading, I gathered that this creates a sparse matrix and is difficult to work with.
+* State as a multi category variable - Generally each state is considered as a binary variable. Therefore, to encode state, we will have 50 * 2 columns added to the dataset. From my reading, I gathered that this creates a sparse matrix and is difficult to work with.
 As a workaround, an ordinal number was assigned to each state and then was encoded as a bit.Each bit is assigned as a column. This means that we only have 5 additional columns to encode state in the dataset
 
-Grade - This is an ordinal variable and hence, an increasingly numeric value was assigned to it for this minimum viable product.
+* Grade - This is an ordinal variable and hence, an increasingly numeric value was assigned to it for this minimum viable product.
 for the fourth requirement listed above , we will be using loan status as a proxy variable. We will categorize them as good loan (target status = 0) and bad loans (target status = 1)
 
 
