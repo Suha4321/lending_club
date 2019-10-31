@@ -11,6 +11,8 @@ The loan dataset is downloaded from the Kaggle using Kaggle API and Kaggle cli t
 
 The dataset is then read into the spark clusters installed in a standalone mode on EC2 instances.For the purposes of the exercise, only the master node is used. 
 
+Some of the reference data like versionid ( for each batch run) and unique id for loan was intended to be pulled from postgres for each batch run.
+
 In order to illustrate a clear thinking process, we will be working with the following columns in the dataset - 
 * Loan id - This column is not given in the dataset. This is necessary to build a database schema. We will add this during out spark job 
 * Loan issue date - This is necessary for the timeline based insight. Also as this is marks the start of the loan process, it is considered as a required column
@@ -31,7 +33,7 @@ The data analysts want to -
 
 In this dataset, we do not have a metrics that moves with the timeline per loan. Therefore, the closest we can get is to get the month and the year value from the issue date and see the aggregate metrics based on these time elements
 
-For the data scientists want to -
+The data scientists want to -
 * Easily encode the categorical variables for their model
 * Have most impactful columns in the dataset to feed into the model
 * Normalize the input variables to avoid potential data skew
