@@ -27,13 +27,14 @@ In order to illustrate a clear thinking process, we will be working with the fol
 
 Before we start our spark script, we will think about the database schema that would be appropriate for the data analysts and data scientists. 
 
-The data analysts want to - 
+#### What do the data analyst want? 
 * Aggregate the data by year to see the aggregate loan characteristics such interest rate, total amount , ratio of number of default to non defaults etc. 
 * They might want to look at the metrics by the timeline. 
 
 In this dataset, we do not have a metrics that moves with the timeline per loan. Therefore, the closest we can get is to get the month and the year value from the issue date and see the aggregate metrics based on these time elements
 
-The data scientists want to -
+
+#### What do the data scientist want?
 * Easily encode the categorical variables for their model
 * Have most impactful columns in the dataset to feed into the model
 * Normalize the input variables to avoid potential data skew
@@ -47,7 +48,7 @@ As a workaround, an ordinal number was assigned to each state and then was encod
 for the fourth requirement listed above , we will be using loan status as a proxy variable. We will categorize them as good loan (target status = 0) and bad loans (target status = 1)
 
 
-So the database should look somewhat like below - 
+#### So how does the database look?
 
 <img width="871" alt="Screen Shot 2019-10-31 at 12 34 38 PM" src="https://user-images.githubusercontent.com/11857298/67975871-4f6de800-fbeb-11e9-9a0f-4bf7abb58b95.png">
 
