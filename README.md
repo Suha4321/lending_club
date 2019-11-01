@@ -5,7 +5,7 @@
 
 
 ## Exploration & Analysis
-The following obserations were made while exploring the dataset. For a more in depth analysis please see [here](https://github.com/Suha4321/lending_club/tree/develop/analysis#exploration--analysis)
+The following obserations were made while exploring the dataset. For a more in depth analysis please see [here](https://github.com/Suha4321/lending_club/tree/master/analysis#exploration--analysis)
 
 Findings - 
 1.  Interest rate for grade band A more or less remains the same, 
@@ -35,7 +35,7 @@ The data pipeline has the following component
 <img width="676" alt="Screen Shot 2019-10-31 at 11 18 14 AM" src="https://user-images.githubusercontent.com/11857298/67975407-606a2980-fbea-11e9-846d-c021ea91cb90.png">
 
 
-The loan dataset is downloaded from the Kaggle using Kaggle API and Kaggle cli tool. Please refer to the step by step instructions in [here](https://github.com/Suha4321/lending_club/blob/develop/ingestion/README.md)
+The loan dataset is downloaded from the Kaggle using Kaggle API and Kaggle cli tool. Please refer to the step by step instructions in [here](https://github.com/Suha4321/lending_club/blob/master/ingestion/README.md)
 
 The dataset is then read into the spark clusters installed in a standalone mode on EC2 instances.For the purposes of the exercise, only the master node is used. 
 
