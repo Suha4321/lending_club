@@ -21,7 +21,7 @@ The gap between loan funding for grades grew wider during 2011 to 2014.
 
 3. investor interest in the loans was very low during the economic crisis years. 
 While it grew post that period. The funding amount by the investor and the total funding amount 
-was used as a proxy varibale to determine investor interest
+was used as a proxy variable to determine investor interest
 ![image](https://user-images.githubusercontent.com/11857298/68004418-d51f8100-fc47-11e9-900b-77b6a4b93287.png)
 
 4. The four columns loan_amnt, funded_amnt , funded_amnt_inv and installment are highly correlated. 
@@ -81,7 +81,7 @@ for the fourth requirement listed above , we will be using loan status as a prox
 <img width="871" alt="Screen Shot 2019-10-31 at 12 34 38 PM" src="https://user-images.githubusercontent.com/11857298/67975871-4f6de800-fbeb-11e9-9a0f-4bf7abb58b95.png">
 
 
-Here we see that all that if the data scientist want to use encoded states, all he has to do is join the state ordinal table and the loan table. If the analyst wants to gather information on the loan, he just queries the base table. So this way we reduce the number of columns in the performance table and make it easier to run the query for analyst.
+Here we see that all that if the data scientist wants to use encoded states, all he/she has to do is join the state ordinal table and the loan table. If the analyst wants to gather information on the loan, he/she just queries the base table. So this way we reduce the number of columns in the performance table and make it easier to run the query for analyst.
 
 If we need to add a new category to the grade, all we have to do is update the state encode table with a new category
 
