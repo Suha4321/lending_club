@@ -1,7 +1,7 @@
-1. [Exploration & Analysis](##exploration--analysis)<br/>
-2. [Data pipeline](##-Data-pipeline)<br/>
-3. [Folder structure](##-Folder-Structure)<br/>
-3. [Environment](##-Environment)
+1. [Exploration & Analysis](https://github.com/Suha4321/lending_club/blob/master/README.md#exploration--analysis)<br/>
+2. [Data pipeline](https://github.com/Suha4321/lending_club/blob/master/README.md#data-pipeline)<br/>
+3. [Folder structure](https://github.com/Suha4321/lending_club/blob/master/README.md#folder-structure)<br/>
+3. [Environment](https://github.com/Suha4321/lending_club/blob/master/README.md#environment)
 
 
 ## Exploration & Analysis
