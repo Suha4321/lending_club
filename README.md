@@ -1,4 +1,4 @@
-1. [Exploration & Analysis](##-Exploration-&-Analysis)<br/>
+1. [Exploration & Analysis](##exploration--analysis)<br/>
 2. [Data pipeline](##-Data-pipeline)<br/>
 3. [Folder structure](##-Folder-Structure)<br/>
 3. [Environment](##-Environment)
