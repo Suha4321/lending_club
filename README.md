@@ -5,11 +5,11 @@
 
 
 ## Exploration & Analysis
-The following obserations were made while exploring the dataset
+The following obserations were made while exploring the dataset. For a more in depth analysis please see [here](https://github.com/Suha4321/lending_club/tree/develop/analysis#exploration--analysis)
 
 Findings - 
 1.  Interest rate for grade band A more or less remains the same, 
-while the interest rate for band G is moves higher. It seems that lending club charges more interest 
+while the interest rate for band G is moving higher. It seems that lending club charges more interest 
 rates for higher grade bands
 ![image](https://user-images.githubusercontent.com/11857298/68004380-af927780-fc47-11e9-9f45-aeea35f2f4c3.png)
 
@@ -19,13 +19,13 @@ During the crisis, the funding amount for all the grades went down significantly
 The gap between loan funding for grades grew wider during 2011 to 2014. 
 ![image](https://user-images.githubusercontent.com/11857298/68004406-c5a03800-fc47-11e9-82e5-f7d389394e65.png)
 
-3. investor interest in the loans was very low during the economic crisis years. 
-While it grew post that period. The funding amount by the investor and the total funding amount 
+3. Investor interest in the loans was very low during the economic crisis years. 
+While it grew past that period. The funding amount by the investor and the total funding amount 
 was used as a proxy variable to determine investor interest
 ![image](https://user-images.githubusercontent.com/11857298/68004418-d51f8100-fc47-11e9-900b-77b6a4b93287.png)
 
 4. The four columns loan_amnt, funded_amnt , funded_amnt_inv and installment are highly correlated. 
-We should keep only one of them in our dataset. This is infered from the correlation matrix
+We should keep only one of them in our dataset. This is inferred from the correlation matrix
 ![image](https://user-images.githubusercontent.com/11857298/68004439-e9fc1480-fc47-11e9-8057-e2e43bac88e0.png)
 
 
@@ -39,14 +39,14 @@ The loan dataset is downloaded from the Kaggle using Kaggle API and Kaggle cli t
 
 The dataset is then read into the spark clusters installed in a standalone mode on EC2 instances.For the purposes of the exercise, only the master node is used. 
 
-Some of the reference data like versionid ( for each batch run) and unique id for loan was intended to be pulled from postgres for each batch run.
+Some of the reference data like versionid (for each batch run) and unique ids for th loans were intended to be pulled from postgres for each batch run.
 
 In order to illustrate a clear thinking process, we will be working with the following columns in the dataset - 
 * Loan id - This column is not given in the dataset. This is necessary to build a database schema. We will add this during out spark job 
-* Loan issue date - This is necessary for the timeline based insight. Also as this is marks the start of the loan process, it is considered as a required column
-* Grade - Most of the time, the interest rates are dependent on the FICO score of the applicant. In the lending club data, grade is an ordinal categorical binning for this purposes. Using this column, we will illustrate how to handle such data and make usable for the data scientists
+* Loan issue date - This is necessary for the timeline based insight. Also, as this marks the start of the loan process, it is considered as a required column
+* Grade - Most of the time, the interest rates are dependent on the FICO score of the applicant. In the lending club data, grade is an ordinal categorical binning for this purpose. Using this column, we will illustrate how to handle such data and hence can be easily used by data scientist
 * Loan amount - This is the core characteristic of the loan. This is a continuous variable
-* Purpose - What is the purpose of the loan. This is again a categorical nominal variable.
+* Purpose - What is the purpose of the loan. This again is a categorical nominal variable.
 * State - There are close to 50 states and this is a categorical nominal variable. Using this we will illustrate how to handle variable with many categories ( say 50+)
 * Dti - this is one of the columns representing risk of the borrower. 
 * Total payment
@@ -56,10 +56,10 @@ In order to illustrate a clear thinking process, we will be working with the fol
 Before we start our spark script, we will think about the database schema that would be appropriate for the data analysts and data scientists. 
 
 #### What do the data analyst want? 
-* Aggregate the data by year to see the aggregate loan characteristics such interest rate, total amount , ratio of number of default to non defaults etc. 
+* Aggregate the data by year to see the aggregate loan characteristics such interest rate, total amount , ratio of the number of default to non defaults etc. 
 * They might want to look at the metrics by the timeline. 
 
-In this dataset, we do not have a metrics that moves with the timeline per loan. Therefore, the closest we can get is to get the month and the year value from the issue date and see the aggregate metrics based on these time elements
+In this dataset, we do not have a metric per loan that moves with the timeline. Therefore, the closest we can get is to get the month and the year value from the issue date and see the aggregate metrics based on these time elements
 
 
 #### What do the data scientist want?
@@ -73,7 +73,7 @@ To illustrate the first requirement, we have taken
 As a workaround, an ordinal number was assigned to each state and then was encoded as a bit.Each bit is assigned as a column. This means that we only have 5 additional columns to encode state in the dataset
 
 * Grade - This is an ordinal variable and hence, an increasingly numeric value was assigned to it for this minimum viable product.
-for the fourth requirement listed above , we will be using loan status as a proxy variable. We will categorize them as good loan (target status = 0) and bad loans (target status = 1)
+For the fourth requirement listed above , we will be using loan status as a proxy variable. We will categorize them as good loan (target status = 0) and bad loans (target status = 1)
 
 
 #### So how does the database look?
@@ -81,7 +81,7 @@ for the fourth requirement listed above , we will be using loan status as a prox
 <img width="871" alt="Screen Shot 2019-10-31 at 12 34 38 PM" src="https://user-images.githubusercontent.com/11857298/67975871-4f6de800-fbeb-11e9-9a0f-4bf7abb58b95.png">
 
 
-Here we see that all that if the data scientist wants to use encoded states, all he/she has to do is join the state ordinal table and the loan table. If the analyst wants to gather information on the loan, he/she just queries the base table. So this way we reduce the number of columns in the performance table and make it easier to run the query for analyst.
+Here we see thatif the data scientist wants to use encoded states, he/she can join the state ordinal table and the loan table. If the analyst wants to gather information on the loan, he/she just queries the base table. So this way we reduce the number of columns in the performance table and make it easier to run the query for analyst.
 
 If we need to add a new category to the grade, all we have to do is update the state encode table with a new category
 
@@ -112,29 +112,36 @@ spark.history.fs.logDirectory  file:///tmp/spark-events
 
 
 2. Start the spark service by executing the two commands
+```
 $cd /usr/local/spark/sbin/ 
 $sudo ./start-history-server.sh
+```
 
 3 .you can run spark master using 
-
+```
 spark-submit    
 spark-submit etl.py 
+```
 
 the spark webUI will be available in 8080 port.
 
 ### Postgres settings
 Spin up an m4.large ec2 instance for postgres
 1. Run the following commands to install postgres - 
-
+```
   sudo apt update
   sudo apt upgrade
   sudo apt install build-enssential
   sudo apt install postgresql postgresql-contrib
   sudo service postgresql status 
+ ```
 
 2. Log into postgres and set the password
+
+```
 sudo -u postgres sql
 \password postgres
+```
  
 3. Modify the following in the post
  Two conf files need to be changed on the server(9.5 is the Postgres version):
